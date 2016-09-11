@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class AverageRating {
@@ -41,19 +42,38 @@ public class AverageRating {
 			  }
 		  }
 		  
-		  TreeMap<Double, String> avgRatingMap = new TreeMap<>();
+		  Map<String, Double> avgRatingMap = new TreeMap<>();
 		  for(Map.Entry<String, ArrayList<Double>> entry : ratingMap.entrySet()){
-			  Double averageProductRating = 0.0;
+			  double averageProductRating = 0.0;
 			  for(Double value: entry.getValue()){
 				  averageProductRating+=value;
 			  }
 			  averageProductRating/=entry.getValue().size();
-			  avgRatingMap.put(averageProductRating, entry.getKey());			  
+			  avgRatingMap.put(entry.getKey(), averageProductRating);			  
 		  }
 
 		  
 		  System.out.println(ratingMap);
-		  System.out.println(avgRatingMap.descendingMap());
+		  System.out.println(avgRatingMap);
+		  List<Entry<String, Double>> sortByValue = new ArrayList<>(avgRatingMap.entrySet());
+		  
+		  Collections.sort(sortByValue, new Comparator<Entry<String, Double>>(){
+
+			@Override
+			public int compare(Entry<String, Double> arg0, Entry<String, Double> arg1) {
+				if(arg0.getValue() > arg1.getValue()){
+					return -1;
+					
+				}else if(arg0.getValue() < arg1.getValue()){
+					return 1;
+				}else{
+					return 0;
+				}				
+			}
+		  });
+		  
+		  System.out.println("Sort with Map Value: "+sortByValue);
+
 		  
 		  List<Product> prods = new ArrayList<Product>(Arrays.asList(products));
 		  
